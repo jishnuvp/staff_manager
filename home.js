@@ -179,14 +179,24 @@ function renderEditPopup(id) {                                // function to cal
 }
 
 function getConfirmation() {
-    let isSubmit = true;
-    submit = confirm("Do you want to continue?");
-    return submit;
+    let isSubmit = confirm("Do you want to continue?");
+    return isSubmit;
 }
 
 function addStaff() {
     document.getElementById('staff-form').trigger('reset');
     modelActions();
+}
+
+function deleteStaff(id) {
+    let isSubmit = getConfirmation();
+    if (isSubmit) {
+        let fetchData = {
+            method: 'DELETE',
+            headers: new Headers()
+        }
+        fetch(url + '' + id + '', fetchData);
+    }
 }
 
 function showHideFields() {
@@ -195,3 +205,4 @@ function showHideFields() {
         let teachingFields = document.getElementById('teaching-fields').classList.remove("d-none");
     }
 }
+
