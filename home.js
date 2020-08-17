@@ -34,9 +34,9 @@ function renderTable() {
 
 renderTable();
 
-function modelActions() {
-    let modal = document.querySelector(".modal");
-    let close = document.querySelector(".close");
+function editModelActions() {
+    let modal = document.querySelector("#edit-modal");
+    let close = document.querySelector("#edit-modal .close");
     modal.style.display = "block";
     close.onclick = function () {
         modal.style.display = "none";
@@ -53,7 +53,7 @@ function modelActions() {
 }
 
 
-function validate() {
+function validateOnEdit() {
     let id = parseInt(document.querySelector('#edit-modal input[name="Id"]').value);
     let code = document.querySelector('#edit-modal input[name="EmpCode"]').value;
     let name = document.querySelector('#edit-modal input[name="Name"]').value;
@@ -63,7 +63,27 @@ function validate() {
     let subject = document.querySelector('#edit-modal input[name="Subject"]').value;
     let role = document.querySelector('#edit-modal input[name="Role"]').value;
     let department = document.querySelector('#edit-modal input[name="Department"]').value;
-    if (name == '' || number == '' || !(/^[a-zA-Z]+$/.test(name)) || !(/^[0-9]+$/.test(number))) {
+    if (code == '' || name == '' || number == '' || !(/^[a-zA-Z]+$/.test(name)) || !(/^[0-9]+$/.test(number))) {
+        return false;
+    }
+    if (type == 'Teaching' && subject == '' || type == 'Teaching' && !(/^[a-zA-Z]+$/.test(subject))) {
+        return false;
+    } else if (type == 'Administrative' && role == '' || type == 'Administrative' && !(/^[a-zA-Z]+$/.test(role))) {
+        return false;
+    } else if (type == 'Support' && department == '' || type == 'Support' && !(/^[a-zA-Z]+$/.test(department))) {
+        return false;
+    }
+    return true;
+}
+function validateOnAdd() {
+    let code = document.querySelector('#add-modal input[name="EmpCode"]').value;
+    let name = document.querySelector('#add-modal input[name="Name"]').value;
+    let type = document.querySelector('#add-modal select[name="StaffType"]').value;
+    let number = document.querySelector('#add-modal input[name="ContactNumber"]').value;
+    let subject = document.querySelector('#add-modal input[name="Subject"]').value;
+    let role = document.querySelector('#add-modal input[name="Role"]').value;
+    let department = document.querySelector('#add-modal input[name="Department"]').value;
+    if (code == '' || name == '' || number == '' || !(/^[a-zA-Z]+$/.test(name)) || !(/^[0-9]+$/.test(number))) {
         return false;
     }
     if (type == 'Teaching' && subject == '' || type == 'Teaching' && !(/^[a-zA-Z]+$/.test(subject))) {
@@ -79,7 +99,7 @@ function validate() {
 
 function editStaff(e) {
     e.preventDefault();
-    var flag = validate();
+    var flag = validateOnEdit();
     if (flag) {
         let data;
         let id = parseInt(document.querySelector('#edit-modal input[name="Id"]').value);
@@ -133,21 +153,22 @@ function editStaff(e) {
         let isSubmit = getConfirmation();
         if (isSubmit) {
             fetch(url + '' + id + '', fetchData)
-                .then(function () {
-                    document.querySelector('#edit-modal').style.display = "none";
+                .then(function (response) {
+                    if (response.status == 200 || response.status == 204)
+                        document.querySelector('#edit-modal').style.display = "none";
+                    else
+                        showErrorMessage('Something went wrong, Please try again.');
                 });
         } else {
             document.querySelector('#edit-modal').style.display = "none";
         }
     } else {
-        var x = document.getElementById("validate-alert");
-        x.className = "show";
-        setTimeout(function () { x.className = x.className.replace("show", ""); }, 3000);
+        showErrorMessage('Please submit valid data only');
     }
 }
 
 function renderEditPopup(id) {                                // function to call getStaffById Api and prefill it on edit popup
-    modelActions();
+    editModelActions();
     let modal = document.getElementById("Staff-modal");
     fetch(url + '' + id + '')
         .then((resp) => resp.json())
@@ -183,11 +204,6 @@ function getConfirmation() {
     return isSubmit;
 }
 
-function addStaff() {
-    document.getElementById('staff-form').trigger('reset');
-    modelActions();
-}
-
 function deleteStaff(id) {
     let isSubmit = getConfirmation();
     if (isSubmit) {
@@ -198,11 +214,114 @@ function deleteStaff(id) {
         fetch(url + '' + id + '', fetchData);
     }
 }
-
-function showHideFields() {
-    let type = document.querySelector('#add-modal input[name="StaffType"]').value;
-    if (type == 'Teaching') {
-        let teachingFields = document.querySelector('#add-modal .teaching-fields').classList.remove("d-none");
+function addModelActions() {
+    let modal = document.querySelector("#add-modal");
+    let close = document.querySelector("#add-modal .close");
+    modal.style.display = "block";
+    close.onclick = function () {
+        modal.style.display = "none";
+    }
+    window.onclick = function (event) {
+        if (event.target == modal) {
+            modal.style.display = "none";
+        }
     }
 }
 
+function renderAddPopup() {
+    addModelActions();
+    document.querySelector('#add-modal .teaching-fields').classList.remove('d-none');
+}
+
+function addStaff(e) {
+    e.preventDefault();
+    let flag = validateOnAdd();
+    if (flag) {
+        let data;
+        let code = document.querySelector('#add-modal input[name="EmpCode"]').value;
+        let name = document.querySelector('#add-modal input[name="Name"]').value;
+        let type = document.querySelector('#add-modal select[name="StaffType"]').value;
+        let number = document.querySelector('#add-modal input[name="ContactNumber"]').value;
+        let date = new Date().toISOString();
+
+
+        if (type == 'Teaching') {
+            let subject = document.querySelector('#add-modal input[name="Subject"]').value;
+            data = {
+                subject: subject,
+                staffType: 1,
+                empCode: code.toUpperCase(),
+                name: name,
+                contactNumber: number,
+                dateOfJoin: date
+            }
+        }
+        else if (type == 'Administrative') {
+            let role = document.querySelector('#add-modal input[name="Role"]').value;
+            data = {
+                empCode: code.toUpperCase(),
+                name: name,
+                staffType: 2,
+                role: role,
+                contactNumber: number,
+                dateOfJoin: date
+            }
+        } else if (type == 'Support') {
+            let department = document.querySelector('#add-modal input[name="Department"]').value;
+            data = {
+                empCode: code.toUpperCase(),
+                name: name,
+                staffType: 3,
+                department: department,
+                contactNumber: number,
+                dateOfJoin: date
+            }
+        }
+        let fetchData = {
+            method: 'POST',
+            body: JSON.stringify(data),
+            headers: new Headers({ 'content-type': 'application/json' })
+        }
+        let isSubmit = getConfirmation();
+        if (isSubmit) {
+            fetch(url, fetchData)
+                .then(function (response) {
+                    if (response.status == 201 || response.status == 204)
+                        document.querySelector('#add-modal').style.display = "none";
+                    else
+                        showErrorMessage('EmpCode already exists, Try with another EmpCode.');
+                });
+        } else {
+            document.querySelector('#add-modal').style.display = "none";
+        }
+    } else {
+        showErrorMessage('Please submit valid data only');
+    }
+}
+
+
+function showHideFields() {
+    let type = document.querySelector('#add-modal select[name="StaffType"]').value;
+    if (type == 'Teaching') {
+        document.querySelector('#add-modal .teaching-fields').classList.remove("d-none");
+    } else {
+        document.querySelector('#add-modal .teaching-fields').classList.add("d-none");
+    }
+    if (type == 'Administrative') {
+        document.querySelector('#add-modal .administrative-fields').classList.remove("d-none");
+    } else {
+        document.querySelector('#add-modal .administrative-fields').classList.add("d-none");
+    }
+    if (type == 'Support') {
+        document.querySelector('#add-modal .support-fields').classList.remove("d-none");
+    } else {
+        document.querySelector('#add-modal .support-fields').classList.add("d-none");
+    }
+}
+
+function showErrorMessage(error) {
+    let x = document.querySelector("#validate-alert");
+    x.innerHTML = error;
+    x.className = "show";
+    setTimeout(function () { x.className = x.className.replace("show", ""); }, 3000);
+}

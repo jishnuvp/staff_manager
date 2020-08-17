@@ -28,7 +28,7 @@
             <option value="Administrative">Administrative</option>
             <option value="Support">Support</option>
         </select>
-        <button type="button" class="staff-add-btn" onclick="addStaff();">Add Staff</button>
+        <button type="button" class="staff-add-btn" onclick="renderAddPopup();">Add Staff</button>
         <div class="table-responsive">
             <table class="table">
                 <thead>
@@ -105,7 +105,61 @@
 
             </div>
         </div>
-        <div id="validate-alert">Please submit valid data only</div>
+        <div id="add-modal" class="modal">
+
+            <!-- Modal content -->
+            <div class="modal-content">
+                <h3 class="modal-title">Add Staff</h3>
+                <span class="close" id="close">&times;</span>
+                <div class="modal-body">
+                    <form id="staff-form">
+                        <div class="form-row">
+                            <label>Employee Code</label>
+                            <input type="text" name="EmpCode" required>
+                        </div>
+                        <div class="form-row">
+                            <label>Name</label>
+                            <input type="text" name="Name" required>
+                        </div>
+                        <div class="form-row">
+                            <label>Staff Type</label>
+                            <select name="StaffType" id="staff-type" onchange="showHideFields();">
+                                <option value="Teaching">Teaching</option>
+                                <option value="Administrative">Administrative</option>
+                                <option value="Support">Support</option>
+                            </select>
+                        </div>
+                        <div class="d-none teaching-fields">
+                            <div class="form-row">
+                                <label>Subject</label>
+                                <input type="text" name="Subject" required>
+                            </div>
+                        </div>
+                        <div class="d-none administrative-fields">
+                            <div class="form-row">
+                                <label>Role</label>
+                                <input type="text" name="Role" required>
+                            </div>
+                        </div>
+                        <div class="d-none support-fields">
+                            <div class="form-row">
+                                <label>Department</label>
+                                <input type="text" name="Department" required>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <label>Contact Number</label>
+                            <input type="text" name="ContactNumber" required>
+                        </div>
+                        <div class="text-center">
+                            <button class="modal-sbmt-btn" type="button" onclick="addStaff(event);">Submit</button>
+                        </div>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+        <div id="validate-alert"></div>
     </div>
     <script src="home.js"></script>
 </body>
