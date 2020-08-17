@@ -8,9 +8,8 @@ function renderTable() {
             let staffs = data.StaffList;
             staffs.map(function (staff) {
                 let htmlSegment = `<tr>
-                            <td>${staff.Id}</td>
-                            <td>${staff.EmpCode}</td>
                             <td>${staff.Name}</td>
+                            <td>${staff.EmpCode}</td>
                             <td>${staff.StaffType}</td>
                             <td>${staff.ContactNumber}</td>
                             <td>${staff.DateOfJoin}</td>
@@ -31,6 +30,7 @@ function renderTable() {
         });
 
 }
+
 renderTable();
 
 function modelActions() {
@@ -96,7 +96,6 @@ function editStaff() {                                      // function to call 
             dateOfJoin: date
         }
     }
-    console.log(data);
     let fetchData = {
         method: 'PUT',
         body: JSON.stringify(data),

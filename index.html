@@ -9,20 +9,32 @@
 </head>
 
 <body>
-    <header></header>
-    <div class="container">
-        <select class="select" id="type-select" onchange="renderTable()">
+    <header>
+
+        <div class="header-wrapper bx">
+            <div class="flex-container">
+                <div class="logo-wrapper">
+                    <p>LOGO</p>
+                </div>
+                <div class="head-wrapper">
+                    <h3 class="text-center">Staff Manager</h3>
+                </div>
+            </div>
+        </div>
+    </header>
+    <div class="container mt">
+        <select class="type-selector" id="type-select" onchange="renderTable()">
             <option value="Teaching" selected>Teaching</option>
             <option value="Administrative">Administrative</option>
             <option value="Support">Support</option>
         </select>
+        <button type="button" class="staff-add-btn" onclick="addStaff();">Add Staff</button>
         <div class="table-responsive">
             <table class="table">
                 <thead>
                     <tr>
-                        <th>Staff Id</th>
-                        <th>Emp Code</th>
                         <th>Name</th>
+                        <th>Emp Code</th>
                         <th>Type</th>
                         <th>Phone Number</th>
                         <th>Date Of Join</th>
@@ -37,22 +49,20 @@
 
             <!-- Modal content -->
             <div class="modal-content">
+                <h3 class="modal-title">Edit Staff</h3>
                 <span class="close" id="close">&times;</span>
-                <div class="modal-content">
+                <div class="modal-body">
                     <form id="staff-form">
-                        <div class="d-flex">
-                            <label>Id</label>
-                            <input name="Id" id="id" readonly required>
-                        </div>
-                        <div class="d-flex">
+                        <input type="hidden" name="Id" id="id" readonly required>
+                        <div class="form-row">
                             <label>Employee Code</label>
                             <input type="text" name="EmpCode" id="empcode" readonly required>
                         </div>
-                        <div class="d-flex">
+                        <div class="form-row">
                             <label>Name</label>
                             <input type="text" name="Name" id="name" required>
                         </div>
-                        <div class="d-flex">
+                        <div class="form-row">
                             <label>Staff Type</label>
                             <input type="text" name="StaffType" id="staff-type" readonly required>
                             <!-- <select name="StaffType" id="staff-type" onchange="showHideFields();">
@@ -62,38 +72,39 @@
                             </select> -->
                         </div>
                         <div class="d-none" id="teaching-fields">
-                            <div class="d-dlex">
+                            <div class="form-row">
                                 <label>Subject</label>
                                 <input type="text" name="Subject" id="subject" required>
                             </div>
                         </div>
                         <div class="d-none" id="administrative-fields">
-                            <div class="d-flex">
+                            <div class="form-row">
                                 <label>Role</label>
                                 <input type="text" name="Role" id="role" required>
                             </div>
                         </div>
                         <div class="d-none" id="support-fields">
-                            <div class="d-flex">
+                            <div class="form-row">
                                 <label>Department</label>
                                 <input type="text" name="Department" id="department" required>
                             </div>
                         </div>
-                        <div class="d-flex">
+                        <div class="form-row">
                             <label>Contact Number</label>
                             <input type="number" name="ContactNumber" id="contact-num" required>
                         </div>
-                        <div class="d-flex">
+                        <div class="form-row">
                             <label>Date Of Join</label>
                             <input type="text" name="DateOfJoin" id="join-date" readonly required>
                         </div>
-                        <button type="button" onclick="editStaff();">Submit</button>
+                        <div class="text-center">
+                            <button class="modal-sbmt-btn" type="button" onclick="editStaff();">Submit</button>
+                        </div>
                     </form>
                 </div>
 
             </div>
         </div>
-        <button type="button" onclick="addStaff();">Add Staff</button>
     </div>
     <!-- <script src="https://code.jquery.com/jquery-3.5.1.min.js"
         integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script> -->
