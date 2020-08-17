@@ -7,12 +7,13 @@ function renderTable() {
         .then(function (data) {
             let staffs = data.StaffList;
             staffs.map(function (staff) {
+                let d = new Date(staff.DateOfJoin);
                 let htmlSegment = `<tr>
                             <td>${staff.Name}</td>
                             <td>${staff.EmpCode}</td>
                             <td>${staff.StaffType}</td>
                             <td>${staff.ContactNumber}</td>
-                            <td>${staff.DateOfJoin}</td>
+                            <td>${d.toLocaleDateString()}</td>
                             <td>
                                 <button title="Edit"  onclick="renderEditPopup(${staff.Id});">&#9997;</button>
                                 <button title="Delete"  onclick="deleteStaff(${staff.Id});">&#10006;</button>
@@ -114,6 +115,7 @@ function renderEditPopup(id) {                                // function to cal
         .then((resp) => resp.json())
         .then(function (data) {
             let staff = data.staff;
+            let date = new Date(staff.DateOfJoin);
             document.getElementById('id').value = staff.Id;
             document.getElementById('empcode').value = staff.EmpCode;
             document.getElementById('name').value = staff.Name;
@@ -131,7 +133,7 @@ function renderEditPopup(id) {                                // function to cal
                 document.getElementById('support-fields').classList.remove('d-none');
             }
             document.getElementById('contact-num').value = staff.ContactNumber;
-            document.getElementById('join-date').value = staff.DateOfJoin;
+            document.getElementById('join-date').value = date.toLocaleDateString();
         })
         .catch(function (error) {
             return false;
