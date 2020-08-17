@@ -1,6 +1,6 @@
 const url = 'https://localhost:44305/staff/';
 function renderTable() {
-    let type = document.getElementById("type-select").value;
+    let type = document.querySelector("#type-select").value;
     let html = '';
     fetch(url + '?type=' + type + '')
         .then((resp) => resp.json())
@@ -47,22 +47,22 @@ function modelActions() {
         }
     }
 
-    document.getElementById('teaching-fields').classList.add('d-none');  //for hiding all custom fields
-    document.getElementById('administrative-fields').classList.add('d-none');
-    document.getElementById('support-fields').classList.add('d-none');
+    document.querySelector('#edit-modal .teaching-fields').classList.add('d-none');  //for hiding all custom fields
+    document.querySelector('#edit-modal .administrative-fields').classList.add('d-none');
+    document.querySelector('#edit-modal .support-fields').classList.add('d-none');
 }
 
 
 function validate() {
-    let id = parseInt(document.querySelector('#edit-modal #id').value);
-    let code = document.querySelector('#edit-modal #empcode').value;
-    let name = document.querySelector('#edit-modal #name').value;
-    let type = document.querySelector('#edit-modal #staff-type').value;
-    let number = document.querySelector('#edit-modal #contact-num').value;
-    let date = document.querySelector('#edit-modal #join-date').value;
-    let subject = document.querySelector('#edit-modal #subject').value;
-    let role = document.querySelector('#edit-modal #role').value;
-    let department = document.querySelector('#edit-modal #department').value;
+    let id = parseInt(document.querySelector('#edit-modal input[name="Id"]').value);
+    let code = document.querySelector('#edit-modal input[name="EmpCode"]').value;
+    let name = document.querySelector('#edit-modal input[name="Name"]').value;
+    let type = document.querySelector('#edit-modal input[name="StaffType"]').value;
+    let number = document.querySelector('#edit-modal input[name="ContactNumber"]').value;
+    let date = document.querySelector('#edit-modal input[name="DateOfJoin"]').value;
+    let subject = document.querySelector('#edit-modal input[name="Subject"]').value;
+    let role = document.querySelector('#edit-modal input[name="Role"]').value;
+    let department = document.querySelector('#edit-modal input[name="Department"]').value;
     if (name == '' || number == '' || !(/^[a-zA-Z]+$/.test(name)) || !(/^[0-9]+$/.test(number))) {
         return false;
     }
@@ -82,16 +82,16 @@ function editStaff(e) {
     var flag = validate();
     if (flag) {
         let data;
-        let id = parseInt(document.querySelector('#edit-modal #id').value);
-        let code = document.querySelector('#edit-modal #empcode').value;
-        let name = document.querySelector('#edit-modal #name').value;
-        let type = document.querySelector('#edit-modal #staff-type').value;
-        let number = document.querySelector('#edit-modal #contact-num').value;
-        let date = document.querySelector('#edit-modal #join-date').value;
+        let id = parseInt(document.querySelector('#edit-modal input[name="Id"]').value);
+        let code = document.querySelector('#edit-modal input[name="EmpCode"]').value;
+        let name = document.querySelector('#edit-modal input[name="Name"]').value;
+        let type = document.querySelector('#edit-modal input[name="StaffType"]').value;
+        let number = document.querySelector('#edit-modal input[name="ContactNumber"]').value;
+        let date = document.querySelector('#edit-modal input[name="DateOfJoin"]').value;
 
 
         if (type == 'Teaching') {
-            let subject = document.querySelector('#edit-modal #subject').value;
+            let subject = document.querySelector('#edit-modal input[name="Subject"]').value;
             data = {
                 subject: subject,
                 id: id,
@@ -103,7 +103,7 @@ function editStaff(e) {
             }
         }
         else if (type == 'Administrative') {
-            let role = document.querySelector('#edit-modal #role').value;
+            let role = document.querySelector('#edit-modal input[name="Role"]').value;
             data = {
                 id: id,
                 empCode: code,
@@ -114,7 +114,7 @@ function editStaff(e) {
                 dateOfJoin: date
             }
         } else if (type == 'Support') {
-            let department = document.querySelector('#edit-modal #department').value;
+            let department = document.querySelector('#edit-modal input[name="Department"]').value;
             data = {
                 id: id,
                 empCode: code,
@@ -154,24 +154,24 @@ function renderEditPopup(id) {                                // function to cal
         .then(function (data) {
             let staff = data.staff;
             let date = new Date(staff.DateOfJoin);
-            document.getElementById('id').value = staff.Id;
-            document.getElementById('empcode').value = staff.EmpCode;
-            document.getElementById('name').value = staff.Name;
-            document.getElementById('staff-type').value = staff.StaffType;
+            document.querySelector('#edit-modal input[name="Id"]').value = staff.Id;
+            document.querySelector('#edit-modal input[name="EmpCode"]').value = staff.EmpCode;
+            document.querySelector('#edit-modal input[name="Name"]').value = staff.Name;
+            document.querySelector('#edit-modal input[name="StaffType"]').value = staff.StaffType;
             if (staff.StaffType == 'Teaching') {
-                document.getElementById('subject').value = staff.Subject;
-                document.getElementById('teaching-fields').classList.remove('d-none');
+                document.querySelector('#edit-modal input[name="Subject"]').value = staff.Subject;
+                document.querySelector('#edit-modal .teaching-fields').classList.remove('d-none');
             }
             if (staff.StaffType == 'Administrative') {
-                document.getElementById('role').value = staff.Role;
-                document.getElementById('administrative-fields').classList.remove('d-none');
+                document.querySelector('#edit-modal input[name="Role"]').value = staff.Role;
+                document.querySelector('#edit-modal .administrative-fields').classList.remove('d-none');
             }
             if (staff.StaffType == 'Support') {
-                document.getElementById('department').value = staff.Department;
-                document.getElementById('support-fields').classList.remove('d-none');
+                document.querySelector('#edit-modal input[name="Department"]').value = staff.Department;
+                document.querySelector('#edit-modal .support-fields').classList.remove('d-none');
             }
-            document.getElementById('contact-num').value = staff.ContactNumber;
-            document.getElementById('join-date').value = date.toLocaleDateString();
+            document.querySelector('#edit-modal input[name="ContactNumber"]').value = staff.ContactNumber;
+            document.querySelector('#edit-modal input[name="DateOfJoin"]').value = date.toLocaleDateString();
         })
         .catch(function (error) {
             return false;
@@ -200,9 +200,9 @@ function deleteStaff(id) {
 }
 
 function showHideFields() {
-    let type = document.getElementById('staff-type').value;
+    let type = document.querySelector('#add-modal input[name="StaffType"]').value;
     if (type == 'Teaching') {
-        let teachingFields = document.getElementById('teaching-fields').classList.remove("d-none");
+        let teachingFields = document.querySelector('#add-modal .teaching-fields').classList.remove("d-none");
     }
 }
 
