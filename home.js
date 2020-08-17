@@ -130,10 +130,15 @@ function editStaff(e) {
             body: JSON.stringify(data),
             headers: new Headers({ 'content-type': 'application/json' })
         }
-        fetch(url + '' + id + '', fetchData)
-            .then(function () {
-                document.querySelector('#edit-modal').style.display = "none";
-            });
+        let isSubmit = getConfirmation();
+        if (isSubmit) {
+            fetch(url + '' + id + '', fetchData)
+                .then(function () {
+                    document.querySelector('#edit-modal').style.display = "none";
+                });
+        } else {
+            document.querySelector('#edit-modal').style.display = "none";
+        }
     } else {
         var x = document.getElementById("validate-alert");
         x.className = "show";
@@ -171,6 +176,12 @@ function renderEditPopup(id) {                                // function to cal
         .catch(function (error) {
             return false;
         });
+}
+
+function getConfirmation() {
+    let isSubmit = true;
+    submit = confirm("Do you want to continue?");
+    return submit;
 }
 
 function addStaff() {
