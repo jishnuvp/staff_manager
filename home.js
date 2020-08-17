@@ -35,8 +35,8 @@ function renderTable() {
 renderTable();
 
 function modelActions() {
-    let modal = document.getElementsByClassName("modal")[0];
-    let close = document.getElementsByClassName("close")[0];
+    let modal = document.querySelector(".modal");
+    let close = document.querySelector(".close");
     modal.style.display = "block";
     close.onclick = function () {
         modal.style.display = "none";
@@ -53,59 +53,92 @@ function modelActions() {
 }
 
 
-
-function editStaff() {                                      // function to call edit api
-    let data;
+function validate() {
     let id = parseInt(document.querySelector('#edit-modal #id').value);
     let code = document.querySelector('#edit-modal #empcode').value;
     let name = document.querySelector('#edit-modal #name').value;
     let type = document.querySelector('#edit-modal #staff-type').value;
     let number = document.querySelector('#edit-modal #contact-num').value;
     let date = document.querySelector('#edit-modal #join-date').value;
-    if (type == 'Teaching') {
-        let subject = document.querySelector('#edit-modal #subject').value;
-        data = {
-            subject: subject,
-            id: id,
-            staffType: 1,
-            empCode: code,
-            name: name,
-            contactNumber: number,
-            dateOfJoin: date
-        }
+    let subject = document.querySelector('#edit-modal #subject').value;
+    let role = document.querySelector('#edit-modal #role').value;
+    let department = document.querySelector('#edit-modal #department').value;
+    if (name == '' || number == '' || !(/^[a-zA-Z]+$/.test(name)) || !(/^[0-9]+$/.test(number))) {
+        return false;
     }
-    else if (type == 'Administrative') {
-        let role = document.querySelector('#edit-modal #role').value;
-        data = {
-            id: id,
-            empCode: code,
-            name: name,
-            staffType: 2,
-            role: role,
-            contactNumber: number,
-            dateOfJoin: date
-        }
-    } else if (type == 'Support') {
-        let department = document.querySelector('#edit-modal #department').value;
-        data = {
-            id: id,
-            empCode: code,
-            name: name,
-            staffType: 3,
-            department: department,
-            contactNumber: number,
-            dateOfJoin: date
-        }
+    if (type == 'Teaching' && subject == '' || type == 'Teaching' && !(/^[a-zA-Z]+$/.test(subject))) {
+        return false;
+    } else if (type == 'Administrative' && role == '' || type == 'Administrative' && !(/^[a-zA-Z]+$/.test(role))) {
+        return false;
+    } else if (type == 'Support' && department == '' || type == 'Support' && !(/^[a-zA-Z]+$/.test(department))) {
+        return false;
     }
-    let fetchData = {
-        method: 'PUT',
-        body: JSON.stringify(data),
-        headers: new Headers({ 'content-type': 'application/json' })
+    return true;
+}
+
+
+function editStaff(e) {
+    e.preventDefault();
+    var flag = validate();
+    if (flag) {
+        let data;
+        let id = parseInt(document.querySelector('#edit-modal #id').value);
+        let code = document.querySelector('#edit-modal #empcode').value;
+        let name = document.querySelector('#edit-modal #name').value;
+        let type = document.querySelector('#edit-modal #staff-type').value;
+        let number = document.querySelector('#edit-modal #contact-num').value;
+        let date = document.querySelector('#edit-modal #join-date').value;
+
+
+        if (type == 'Teaching') {
+            let subject = document.querySelector('#edit-modal #subject').value;
+            data = {
+                subject: subject,
+                id: id,
+                staffType: 1,
+                empCode: code,
+                name: name,
+                contactNumber: number,
+                dateOfJoin: date
+            }
+        }
+        else if (type == 'Administrative') {
+            let role = document.querySelector('#edit-modal #role').value;
+            data = {
+                id: id,
+                empCode: code,
+                name: name,
+                staffType: 2,
+                role: role,
+                contactNumber: number,
+                dateOfJoin: date
+            }
+        } else if (type == 'Support') {
+            let department = document.querySelector('#edit-modal #department').value;
+            data = {
+                id: id,
+                empCode: code,
+                name: name,
+                staffType: 3,
+                department: department,
+                contactNumber: number,
+                dateOfJoin: date
+            }
+        }
+        let fetchData = {
+            method: 'PUT',
+            body: JSON.stringify(data),
+            headers: new Headers({ 'content-type': 'application/json' })
+        }
+        fetch(url + '' + id + '', fetchData)
+            .then(function () {
+                document.querySelector('#edit-modal').style.display = "none";
+            });
+    } else {
+        var x = document.getElementById("validate-alert");
+        x.className = "show";
+        setTimeout(function () { x.className = x.className.replace("show", ""); }, 3000);
     }
-    fetch(url + '' + id + '', fetchData)
-        .then(function () {
-            document.querySelector('#edit-modal').style.display = "none";
-        });
 }
 
 function renderEditPopup(id) {                                // function to call getStaffById Api and prefill it on edit popup

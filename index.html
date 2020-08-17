@@ -91,15 +91,16 @@
                         </div>
                         <div class="form-row">
                             <label>Contact Number</label>
-                            <input type="number" name="ContactNumber" id="contact-num" required>
+                            <input type="text" name="ContactNumber" id="contact-num" required>
                         </div>
                         <div class="form-row">
                             <label>Date Of Join</label>
                             <input type="text" name="DateOfJoin" id="join-date" readonly required>
                         </div>
                         <div class="text-center">
-                            <button class="modal-sbmt-btn" type="button" onclick="editStaff();">Submit</button>
+                            <button class="modal-sbmt-btn" type="button" onclick="editStaff(event);">Submit</button>
                         </div>
+                        <div id="validate-alert">Please submit valid data only</div>
                     </form>
                 </div>
 
