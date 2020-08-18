@@ -137,8 +137,10 @@ function editStaff(e) {
         if (isSubmit) {
             fetch(url + '' + id + '', fetchData)
                 .then(function (response) {
-                    if (response.status == 200 || response.status == 204)
+                    if (response.status == 200 || response.status == 204) {
                         document.querySelector('#staff-modal').style.display = "none";
+                        window.location.reload();
+                    }
                     else
                         showErrorMessage('Something went wrong, Please try again.');
                 });
