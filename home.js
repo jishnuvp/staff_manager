@@ -327,7 +327,7 @@ function showErrorMessage(error) {
 }
 
 function sortTable(n) {
-    var table, rows, switching, i, x, y, shouldSwitch, dir, switchcount = 0;
+    let table, rows, switching, i, x, y, shouldSwitch, dir, switchcount = 0;
     table = document.getElementById("staff-table");
     switching = true;
     dir = "asc";

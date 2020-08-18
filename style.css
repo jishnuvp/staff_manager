@@ -39,6 +39,9 @@ body {
     width: 100%;
     overflow-x: auto;
 }
+.table .sort-th{
+    cursor: pointer;
+}
 .my-2 {
     margin-top: 2rem;
     margin-bottom: 2rem;
