@@ -49,6 +49,9 @@ body {
 .mt-2 {
     margin-top: 2rem;
 }
+.mx-auto{
+    margin: 0 auto;
+}
 .d-none{
     display: none;
 }
@@ -118,7 +121,7 @@ body {
     border:none;
 }
 .type-selector{
-    padding: 7px 14px;
+    padding: 3px 15px;
 }
 /* modal popup */
 

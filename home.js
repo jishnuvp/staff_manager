@@ -34,9 +34,9 @@ function renderTable() {
 
 renderTable();
 
-function editModelActions() {
-    let modal = document.querySelector("#edit-modal");
-    let close = document.querySelector("#edit-modal .close");
+function modelActions() {
+    let modal = document.querySelector("#staff-modal");
+    let close = document.querySelector("#staff-modal .close");
     modal.style.display = "block";
     close.onclick = function () {
         modal.style.display = "none";
@@ -47,22 +47,25 @@ function editModelActions() {
         }
     }
 
-    document.querySelector('#edit-modal .teaching-fields').classList.add('d-none');  //for hiding all custom fields
-    document.querySelector('#edit-modal .administrative-fields').classList.add('d-none');
-    document.querySelector('#edit-modal .support-fields').classList.add('d-none');
+    document.querySelector('#staff-modal .teaching-fields').classList.add('d-none');  //for hiding all custom fields
+    document.querySelector('#staff-modal .administrative-fields').classList.add('d-none');
+    document.querySelector('#staff-modal .support-fields').classList.add('d-none');
 }
 
 
-function validateOnEdit() {
-    let id = parseInt(document.querySelector('#edit-modal input[name="Id"]').value);
-    let code = document.querySelector('#edit-modal input[name="EmpCode"]').value;
-    let name = document.querySelector('#edit-modal input[name="Name"]').value;
-    let type = document.querySelector('#edit-modal input[name="StaffType"]').value;
-    let number = document.querySelector('#edit-modal input[name="ContactNumber"]').value;
-    let date = document.querySelector('#edit-modal input[name="DateOfJoin"]').value;
-    let subject = document.querySelector('#edit-modal input[name="Subject"]').value;
-    let role = document.querySelector('#edit-modal input[name="Role"]').value;
-    let department = document.querySelector('#edit-modal input[name="Department"]').value;
+function validate(isAdd) {
+    let code = document.querySelector('#staff-modal input[name="EmpCode"]').value;
+    let name = document.querySelector('#staff-modal input[name="Name"]').value;
+    let number = document.querySelector('#staff-modal input[name="ContactNumber"]').value;
+    let subject = document.querySelector('#staff-modal input[name="Subject"]').value;
+    let role = document.querySelector('#staff-modal input[name="Role"]').value;
+    let department = document.querySelector('#staff-modal input[name="Department"]').value;
+    var type;
+    if (isAdd) {
+        type = document.querySelector('#staff-modal select[name="StaffType"]').value;
+    } else {
+        type = document.querySelector('#staff-modal input[name="StaffType"]').value;
+    }
     if (code == '' || name == '' || number == '' || !(/^[a-zA-Z]+$/.test(name)) || !(/^[0-9]+$/.test(number))) {
         return false;
     }
@@ -75,43 +78,23 @@ function validateOnEdit() {
     }
     return true;
 }
-function validateOnAdd() {
-    let code = document.querySelector('#add-modal input[name="EmpCode"]').value;
-    let name = document.querySelector('#add-modal input[name="Name"]').value;
-    let type = document.querySelector('#add-modal select[name="StaffType"]').value;
-    let number = document.querySelector('#add-modal input[name="ContactNumber"]').value;
-    let subject = document.querySelector('#add-modal input[name="Subject"]').value;
-    let role = document.querySelector('#add-modal input[name="Role"]').value;
-    let department = document.querySelector('#add-modal input[name="Department"]').value;
-    if (code == '' || name == '' || number == '' || !(/^[a-zA-Z]+$/.test(name)) || !(/^[0-9]+$/.test(number))) {
-        return false;
-    }
-    if (type == 'Teaching' && subject == '' || type == 'Teaching' && !(/^[a-zA-Z]+$/.test(subject))) {
-        return false;
-    } else if (type == 'Administrative' && role == '' || type == 'Administrative' && !(/^[a-zA-Z]+$/.test(role))) {
-        return false;
-    } else if (type == 'Support' && department == '' || type == 'Support' && !(/^[a-zA-Z]+$/.test(department))) {
-        return false;
-    }
-    return true;
-}
-
 
 function editStaff(e) {
     e.preventDefault();
-    var flag = validateOnEdit();
+    let isAdd = false;
+    let flag = validate(isAdd);
     if (flag) {
         let data;
-        let id = parseInt(document.querySelector('#edit-modal input[name="Id"]').value);
-        let code = document.querySelector('#edit-modal input[name="EmpCode"]').value;
-        let name = document.querySelector('#edit-modal input[name="Name"]').value;
-        let type = document.querySelector('#edit-modal input[name="StaffType"]').value;
-        let number = document.querySelector('#edit-modal input[name="ContactNumber"]').value;
-        let date = document.querySelector('#edit-modal input[name="DateOfJoin"]').value;
+        let id = parseInt(document.querySelector('#staff-modal input[name="Id"]').value);
+        let code = document.querySelector('#staff-modal input[name="EmpCode"]').value;
+        let name = document.querySelector('#staff-modal input[name="Name"]').value;
+        let type = document.querySelector('#staff-modal input[name="StaffType"]').value;
+        let number = document.querySelector('#staff-modal input[name="ContactNumber"]').value;
+        let date = document.querySelector('#staff-modal input[name="DateOfJoin"]').value;
 
 
         if (type == 'Teaching') {
-            let subject = document.querySelector('#edit-modal input[name="Subject"]').value;
+            let subject = document.querySelector('#staff-modal input[name="Subject"]').value;
             data = {
                 subject: subject,
                 id: id,
@@ -123,7 +106,7 @@ function editStaff(e) {
             }
         }
         else if (type == 'Administrative') {
-            let role = document.querySelector('#edit-modal input[name="Role"]').value;
+            let role = document.querySelector('#staff-modal input[name="Role"]').value;
             data = {
                 id: id,
                 empCode: code,
@@ -134,7 +117,7 @@ function editStaff(e) {
                 dateOfJoin: date
             }
         } else if (type == 'Support') {
-            let department = document.querySelector('#edit-modal input[name="Department"]').value;
+            let department = document.querySelector('#staff-modal input[name="Department"]').value;
             data = {
                 id: id,
                 empCode: code,
@@ -155,12 +138,12 @@ function editStaff(e) {
             fetch(url + '' + id + '', fetchData)
                 .then(function (response) {
                     if (response.status == 200 || response.status == 204)
-                        document.querySelector('#edit-modal').style.display = "none";
+                        document.querySelector('#staff-modal').style.display = "none";
                     else
                         showErrorMessage('Something went wrong, Please try again.');
                 });
         } else {
-            document.querySelector('#edit-modal').style.display = "none";
+            document.querySelector('#staff-modal').style.display = "none";
         }
     } else {
         showErrorMessage('Please submit valid data only');
@@ -168,31 +151,46 @@ function editStaff(e) {
 }
 
 function renderEditPopup(id) {                                // function to call getStaffById Api and prefill it on edit popup
-    editModelActions();
+    modelActions();
+    document.querySelector('#edit-title').style.display = 'block';
+    document.querySelector('#add-title').style.display = 'none';
+    document.querySelector('#edit-sbmt-btn').style.display = 'block';
+    document.querySelector('#add-sbmt-btn').style.display = 'none';
+    document.querySelector('#form-date').style.display = 'flex';
+    document.querySelector('#staff-type-add').style.display = 'none';
+    document.querySelector('#staff-type-edit').style.display = 'block';
+    let elements = document.getElementById("staff-form").elements;
+    for (var i = 0; i < elements.length; i++) {
+        if (elements[i].name == 'EmpCode' || elements[i].name == 'StaffType' || elements[i].name == 'DateOfJoin') {
+            if (elements[i].readOnly == false)
+                elements[i].readOnly = true;
+        }
+    }
+
     let modal = document.getElementById("Staff-modal");
     fetch(url + '' + id + '')
         .then((resp) => resp.json())
         .then(function (data) {
             let staff = data.staff;
             let date = new Date(staff.DateOfJoin);
-            document.querySelector('#edit-modal input[name="Id"]').value = staff.Id;
-            document.querySelector('#edit-modal input[name="EmpCode"]').value = staff.EmpCode;
-            document.querySelector('#edit-modal input[name="Name"]').value = staff.Name;
-            document.querySelector('#edit-modal input[name="StaffType"]').value = staff.StaffType;
+            document.querySelector('#staff-modal input[name="Id"]').value = staff.Id;
+            document.querySelector('#staff-modal input[name="EmpCode"]').value = staff.EmpCode;
+            document.querySelector('#staff-modal input[name="Name"]').value = staff.Name;
+            document.querySelector('#staff-modal input[name="StaffType"]').value = staff.StaffType;
             if (staff.StaffType == 'Teaching') {
-                document.querySelector('#edit-modal input[name="Subject"]').value = staff.Subject;
-                document.querySelector('#edit-modal .teaching-fields').classList.remove('d-none');
+                document.querySelector('#staff-modal input[name="Subject"]').value = staff.Subject;
+                document.querySelector('#staff-modal .teaching-fields').classList.remove('d-none');
             }
             if (staff.StaffType == 'Administrative') {
-                document.querySelector('#edit-modal input[name="Role"]').value = staff.Role;
-                document.querySelector('#edit-modal .administrative-fields').classList.remove('d-none');
+                document.querySelector('#staff-modal input[name="Role"]').value = staff.Role;
+                document.querySelector('#staff-modal .administrative-fields').classList.remove('d-none');
             }
             if (staff.StaffType == 'Support') {
-                document.querySelector('#edit-modal input[name="Department"]').value = staff.Department;
-                document.querySelector('#edit-modal .support-fields').classList.remove('d-none');
+                document.querySelector('#staff-modal input[name="Department"]').value = staff.Department;
+                document.querySelector('#staff-modal .support-fields').classList.remove('d-none');
             }
-            document.querySelector('#edit-modal input[name="ContactNumber"]').value = staff.ContactNumber;
-            document.querySelector('#edit-modal input[name="DateOfJoin"]').value = date.toLocaleDateString();
+            document.querySelector('#staff-modal input[name="ContactNumber"]').value = staff.ContactNumber;
+            document.querySelector('#staff-modal input[name="DateOfJoin"]').value = date.toLocaleDateString();
         })
         .catch(function (error) {
             return false;
@@ -211,42 +209,56 @@ function deleteStaff(id) {
             method: 'DELETE',
             headers: new Headers()
         }
-        fetch(url + '' + id + '', fetchData);
-    }
-}
-function addModelActions() {
-    let modal = document.querySelector("#add-modal");
-    let close = document.querySelector("#add-modal .close");
-    modal.style.display = "block";
-    close.onclick = function () {
-        modal.style.display = "none";
-    }
-    window.onclick = function (event) {
-        if (event.target == modal) {
-            modal.style.display = "none";
-        }
+        fetch(url + '' + id + '', fetchData)
+            .then(function (response) {
+                if (response.status == 200 || response.status == 204) {
+                    document.querySelector('#staff-modal').style.display = "none";
+                    window.location.reload();
+                }
+                else
+                    showErrorMessage('Something went wrong. Please try again');
+            });
     }
 }
 
 function renderAddPopup() {
-    addModelActions();
-    document.querySelector('#add-modal .teaching-fields').classList.remove('d-none');
+    modelActions();
+    document.querySelector('#edit-title').style.display = 'none';
+    document.querySelector('#add-title').style.display = 'block';
+    document.querySelector('#edit-sbmt-btn').style.display = 'none';
+    document.querySelector('#add-sbmt-btn').style.display = 'block';
+    document.querySelector('#form-date').style.display = 'none';
+    document.querySelector('#staff-type-add').style.display = 'block';
+    document.querySelector('#staff-type-edit').style.display = 'none';
+    document.querySelector('#staff-modal .teaching-fields').classList.remove('d-none');
+
+    let elements = document.getElementById("staff-form").elements;
+    for (var i = 0; i < elements.length; i++) {
+        if (elements[i].readOnly == true) {
+            elements[i].readOnly = false;
+        }
+        elements[i].value = '';
+    }
+    document.querySelector('#staff-modal select[name="StaffType"]').value = 'Teaching';
+
+
 }
 
 function addStaff(e) {
     e.preventDefault();
-    let flag = validateOnAdd();
+    let isAdd = true;
+    let flag = validate(isAdd);
     if (flag) {
         let data;
-        let code = document.querySelector('#add-modal input[name="EmpCode"]').value;
-        let name = document.querySelector('#add-modal input[name="Name"]').value;
-        let type = document.querySelector('#add-modal select[name="StaffType"]').value;
-        let number = document.querySelector('#add-modal input[name="ContactNumber"]').value;
+        let code = document.querySelector('#staff-modal input[name="EmpCode"]').value;
+        let name = document.querySelector('#staff-modal input[name="Name"]').value;
+        let type = document.querySelector('#staff-modal select[name="StaffType"]').value;
+        let number = document.querySelector('#staff-modal input[name="ContactNumber"]').value;
         let date = new Date().toISOString();
 
 
         if (type == 'Teaching') {
-            let subject = document.querySelector('#add-modal input[name="Subject"]').value;
+            let subject = document.querySelector('#staff-modal input[name="Subject"]').value;
             data = {
                 subject: subject,
                 staffType: 1,
@@ -257,7 +269,7 @@ function addStaff(e) {
             }
         }
         else if (type == 'Administrative') {
-            let role = document.querySelector('#add-modal input[name="Role"]').value;
+            let role = document.querySelector('#staff-modal input[name="Role"]').value;
             data = {
                 empCode: code.toUpperCase(),
                 name: name,
@@ -267,7 +279,7 @@ function addStaff(e) {
                 dateOfJoin: date
             }
         } else if (type == 'Support') {
-            let department = document.querySelector('#add-modal input[name="Department"]').value;
+            let department = document.querySelector('#staff-modal input[name="Department"]').value;
             data = {
                 empCode: code.toUpperCase(),
                 name: name,
@@ -286,13 +298,15 @@ function addStaff(e) {
         if (isSubmit) {
             fetch(url, fetchData)
                 .then(function (response) {
-                    if (response.status == 201 || response.status == 204)
-                        document.querySelector('#add-modal').style.display = "none";
+                    if (response.status == 201 || response.status == 204) {
+                        document.querySelector('#staff-modal').style.display = "none";
+                        window.location.reload();
+                    }
                     else
                         showErrorMessage('EmpCode already exists, Try with another EmpCode.');
                 });
         } else {
-            document.querySelector('#add-modal').style.display = "none";
+            document.querySelector('#staff-modal').style.display = "none";
         }
     } else {
         showErrorMessage('Please submit valid data only');
@@ -301,21 +315,21 @@ function addStaff(e) {
 
 
 function showHideFields() {
-    let type = document.querySelector('#add-modal select[name="StaffType"]').value;
+    let type = document.querySelector('#staff-modal select[name="StaffType"]').value;
     if (type == 'Teaching') {
-        document.querySelector('#add-modal .teaching-fields').classList.remove("d-none");
+        document.querySelector('#staff-modal .teaching-fields').classList.remove("d-none");
     } else {
-        document.querySelector('#add-modal .teaching-fields').classList.add("d-none");
+        document.querySelector('#staff-modal .teaching-fields').classList.add("d-none");
     }
     if (type == 'Administrative') {
-        document.querySelector('#add-modal .administrative-fields').classList.remove("d-none");
+        document.querySelector('#staff-modal .administrative-fields').classList.remove("d-none");
     } else {
-        document.querySelector('#add-modal .administrative-fields').classList.add("d-none");
+        document.querySelector('#staff-modal .administrative-fields').classList.add("d-none");
     }
     if (type == 'Support') {
-        document.querySelector('#add-modal .support-fields').classList.remove("d-none");
+        document.querySelector('#staff-modal .support-fields').classList.remove("d-none");
     } else {
-        document.querySelector('#add-modal .support-fields').classList.add("d-none");
+        document.querySelector('#staff-modal .support-fields').classList.add("d-none");
     }
 }
 

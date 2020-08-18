@@ -45,11 +45,12 @@
                 </tbody>
             </table>
         </div>
-        <div id="edit-modal" class="modal">
+        <div id="staff-modal" class="modal">
 
             <!-- Modal content -->
             <div class="modal-content">
-                <h3 class="modal-title">Edit Staff</h3>
+                <h3 class="modal-title" id="add-title">Add Staff</h3>
+                <h3 class="modal-title" id="edit-title">Edit Staff</h3>
                 <span class="close" id="close">&times;</span>
                 <div class="modal-body">
                     <form id="staff-form">
@@ -64,12 +65,14 @@
                         </div>
                         <div class="form-row">
                             <label>Staff Type</label>
-                            <input type="text" name="StaffType" id="staff-type" readonly required>
-                            <!-- <select name="StaffType" id="staff-type" onchange="showHideFields();">
-                                <option value="Teaching">Teaching</option>
-                                <option value="Administrative">Administrative</option>
-                                <option value="Support">Support</option>
-                            </select> -->
+                            <input type="text" name="StaffType" id="staff-type-edit" readonly required>
+                            <div id="staff-type-add">
+                                <select name="StaffType" class="type-selector" onchange="showHideFields();">
+                                    <option value="Teaching" selected>Teaching</option>
+                                    <option value="Administrative">Administrative</option>
+                                    <option value="Support">Support</option>
+                                </select>
+                            </div>
                         </div>
                         <div class="d-none teaching-fields">
                             <div class="form-row">
@@ -93,66 +96,15 @@
                             <label>Contact Number</label>
                             <input type="text" name="ContactNumber" required>
                         </div>
-                        <div class="form-row">
+                        <div class="form-row" id="form-date">
                             <label>Date Of Join</label>
                             <input type="text" name="DateOfJoin" readonly required>
                         </div>
                         <div class="text-center">
-                            <button class="modal-sbmt-btn" type="button" onclick="editStaff(event);">Submit</button>
-                        </div>
-                    </form>
-                </div>
-
-            </div>
-        </div>
-        <div id="add-modal" class="modal">
-
-            <!-- Modal content -->
-            <div class="modal-content">
-                <h3 class="modal-title">Add Staff</h3>
-                <span class="close" id="close">&times;</span>
-                <div class="modal-body">
-                    <form id="staff-form">
-                        <div class="form-row">
-                            <label>Employee Code</label>
-                            <input type="text" name="EmpCode" required>
-                        </div>
-                        <div class="form-row">
-                            <label>Name</label>
-                            <input type="text" name="Name" required>
-                        </div>
-                        <div class="form-row">
-                            <label>Staff Type</label>
-                            <select name="StaffType" id="staff-type" onchange="showHideFields();">
-                                <option value="Teaching">Teaching</option>
-                                <option value="Administrative">Administrative</option>
-                                <option value="Support">Support</option>
-                            </select>
-                        </div>
-                        <div class="d-none teaching-fields">
-                            <div class="form-row">
-                                <label>Subject</label>
-                                <input type="text" name="Subject" required>
-                            </div>
-                        </div>
-                        <div class="d-none administrative-fields">
-                            <div class="form-row">
-                                <label>Role</label>
-                                <input type="text" name="Role" required>
-                            </div>
-                        </div>
-                        <div class="d-none support-fields">
-                            <div class="form-row">
-                                <label>Department</label>
-                                <input type="text" name="Department" required>
-                            </div>
-                        </div>
-                        <div class="form-row">
-                            <label>Contact Number</label>
-                            <input type="text" name="ContactNumber" required>
-                        </div>
-                        <div class="text-center">
-                            <button class="modal-sbmt-btn" type="button" onclick="addStaff(event);">Submit</button>
+                            <button class="modal-sbmt-btn mx-auto" type="button" id="edit-sbmt-btn"
+                                onclick="editStaff(event);">Submit</button>
+                            <button class="modal-sbmt-btn mx-auto" type="button" id="add-sbmt-btn"
+                                onclick="addStaff(event);">Submit</button>
                         </div>
                     </form>
                 </div>
