@@ -42,6 +42,10 @@ body {
 .table .sort-th{
     cursor: pointer;
 }
+.table .sort-th span{
+    font-size: 14px;
+    font-weight: 400;
+}
 .my-2 {
     margin-top: 2rem;
     margin-bottom: 2rem;

@@ -127,13 +127,13 @@ function editStaff(e) {
                         window.location.reload();
                     }
                     else
-                        showErrorMessage('Something went wrong, Please try again.');
+                        showToasterMessage('Something went wrong, Please try again.', '#ea2121');
                 });
         } else {
             document.querySelector('#staff-modal').style.display = "none";
         }
     } else {
-        showErrorMessage('Please submit valid data only');
+        showToasterMessage('Please submit valid data only', '#ea2121');
     }
 }
 
@@ -203,7 +203,7 @@ function deleteStaff(id) {
                     window.location.reload();
                 }
                 else
-                    showErrorMessage('Something went wrong. Please try again');
+                    showToasterMessage('Something went wrong. Please try again');
             });
     }
 }
@@ -277,13 +277,13 @@ function addStaff(e) {
                         window.location.reload();
                     }
                     else
-                        showErrorMessage('EmpCode already exists, Try with another EmpCode.');
+                        showToasterMessage('EmpCode already exists, Try with another EmpCode.', '#ea2121');
                 });
         } else {
             document.querySelector('#staff-modal').style.display = "none";
         }
     } else {
-        showErrorMessage('Please submit valid data only');
+        showToasterMessage('Please submit valid data only', '#ea2121');
     }
 }
 
@@ -307,8 +307,9 @@ function showHideFields() {
     }
 }
 
-function showErrorMessage(error) {
+function showToasterMessage(error, bgColor) {
     let x = document.querySelector("#validate-alert");
+    x.style.backgroundColor = bgColor;
     x.innerHTML = error;
     x.className = "show";
     setTimeout(function () { x.className = x.className.replace("show", ""); }, 3000);
